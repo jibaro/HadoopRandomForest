@@ -29,7 +29,7 @@ def getPlayerThreat(num_player,playermovement,playerrank):
 	for i in range(num_player):
 		ave_move = float(playermovement[i][0]+2*playermovement[i][1]+3*playermovement[i][2]+4*playermovement[i][3]+5*playermovement[i][4])\
 			/(playermovement[i][0]+playermovement[i][1]+playermovement[i][2]+playermovement[i][3]+playermovement[i][4])
-		a=7461*num_player-sum(playerrank[i])
+		a=7461*len(playerrank[i])-sum(playerrank[i])
 		b=len(playerrank[i])
 		print "a,b is : %s"% a,b,ave_move
 		ave_rank = float(a)/b

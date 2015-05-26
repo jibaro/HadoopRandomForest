@@ -9,14 +9,17 @@ import cards2_judge as cd
 
 def main():
 	num_player=3
-	card_player=[[['Jd','Ah'],['Js','Jh'],['7s','Kh']],[['2s','9d'],['2h','9s'],['4c','2d']],[['2c','3c'],['Tc','Kc'],['Kc','Qc']]]
+	card_player=[[['Jd','Ah'],['Js','Jh']],[['2s','9d'],['2h','9s'],['4c','2d']],[['2c','3c'],['Tc','Kc'],['Kc','Qc']]]
 	board_player=[['5d','8s','Ac','Jc','4d'],['5d','8s','Ac','Jc','4d'],['5d','8c','Ac','Jc','4d']]
-	playermovement=[[0,0,3,7,0],[0,0,3,7,0],[0,0,3,7,0]]
+	playermovement=[[1,0,3,6,0],[0,0,3,7,0],[0,0,3,7,0]]
 	#playerrank=[[3731,3731,3731],[2487,2487,2487],[4974,4974,4974]]
 
 	playerrank=getRank(num_player,card_player,board_player)
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	print "playerrank is : %s"%playerrank
+	print "threat is : %s"%threat
+
+
 
 def getRank(num_player,card_player,board_player):
 	playerrank=[[]for row in range(num_player)]
@@ -38,7 +41,7 @@ def getPlayerThreat(num_player,playermovement,playerrank):
 	for i in range(num_player):
 		ave_move = float(playermovement[i][0]+2*playermovement[i][1]+3*playermovement[i][2]+4*playermovement[i][3]+5*playermovement[i][4])\
 			/(playermovement[i][0]+playermovement[i][1]+playermovement[i][2]+playermovement[i][3]+playermovement[i][4])
-		a=7461*num_player-sum(playerrank[i])
+		a=7461*len(playerrank[i])-sum(playerrank[i])
 		b=len(playerrank[i])
 		print "a,b is : %s"% a,b,ave_move
 		ave_rank = float(a)/b
