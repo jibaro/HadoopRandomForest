@@ -208,10 +208,9 @@ def makeDecisionBlind(card,cardround,oppobehaveblind,oppobehavenumblind,num_play
 	else:
 		return 'call'
 
-def makeDecisionFlop(card,cardround,percentage,oppobehaveflop,oppobehavenumflop,num_player):
+def makeDecisionFlop(card,cardround,percentage,oppobehaveflop,oppobehavenumflop,num_player,rank2):
 	(index1,index2)= getCardPercentageRank(card,percentage)
 	del_index = index2-index1
-	rank2 = getRank2(card)
 	if cardround==1:
 			if rank2<=322 :
 				return 'raise 100'
@@ -528,10 +527,8 @@ def makeDecisionFlop(card,cardround,percentage,oppobehaveflop,oppobehavenumflop,
 			else:
 				return 'fold'
 
-def makeDecisionRiver(card,cardround,oppobehaveriver,oppobehavenumriver,num_player):
-		rank3 = getRank3(card)
-		rank4 = getRank4(card)
-		rankboard = getRankBoard(card)
+def makeDecisionRiver(card,cardround,oppobehaveriver,oppobehavenumriver,num_player,rank3,rank4,rankboard):
+
 		if cardround==1:
 			if rank4<rank3 and rank4<rankboard:	
 				if rank4<=166:
@@ -673,7 +670,7 @@ def makeDecisionRiver(card,cardround,oppobehaveriver,oppobehavenumriver,num_play
 			else:
 				return 'fold'
 
-def makeDecisionTurn(card,cardround,percentage,oppobehaveturn,oppobehavenumturn,num_player):
+def makeDecisionTurn(card,cardround,percentage,oppobehaveturn,oppobehavenumturn,num_player,rank2,rank3):
 		rank2 = getRank2(card)
 		rank3 = getRank3(card)
 		(index1,index2)= getCardPercentageRank(card,percentage)
