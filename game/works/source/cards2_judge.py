@@ -15,25 +15,31 @@ import cards2_strong as cs
 #card_player[num_player][7]
 rank2 = None
 rank3 = None
-
+rank4 = None 
 def main():
 	t1=time.clock()
+
 	num_player=3
+	card=['Ks','Qd','Jh','Ts','9d','7s','2d']
 	card_player=[[['As','Ad']for i in range(50)],[['8h','Th']for i in range(50)],[['2s','2d']for i in range(50)]]
 	board_player=[['5d','8c','Ac','Jc','4d']for i in range(50)]
-	playermovement=[[30,0,30,10,0],[0,0,30,70,0],[0,0,30,70,0]]
-	percentage=[[0,0.2,0.15,0.4,0,0.2,0,0.05,0,0],[0,0,0,0.4,0.2,0,0,0.4,0,0],[0,0.3,0.5,0,0,0.2,0,0,0,0]]
+	playermovement=[[30,0,30,10,0],[0,0,30,70,0],[20,20,20,20,20]]
+	percentage=[0,0.2,0.15,0.4,0,0.2,0,0.05,0,0]
 	#playerrank=[[3731,3731,3731],[2487,2487,2487],[4974,4974,4974]]
 	cardround=1
 	oppobehave=[['call','check','call','call','raise','call'],['call','check','call','call','raise','call'],['call','check','call','call','raise','call']]
 	oppobehavenum=[[100,0,200,200,300,300],[100,0,200,200,300,300],[100,0,200,200,300,300]]
-	playerrank=[[]for row in range(num_player)]
+	playerrank=[[3325 for i in range(50)],[4700 for i in range(50)],[2467 for i in range(50)]]
+	'''
 	for i in range(num_player):
 		for x in range(len(board_player)):
-			card=[card_player[i][x][0],card_player[i][x][1],board_player[x][0],board_player[x][1],board_player[x][2],board_player[x][3],board_player[x][4]]
-			rank_temp=cn.getRank4(card)
+			cardx=[card_player[i][x][0],card_player[i][x][1],board_player[x][0],board_player[x][1],board_player[x][2],board_player[x][3],board_player[x][4]]
+
+			rank_temp=cn.getRank4(cardx)
+			t2=time.clock()
+
 			playerrank[i].append(rank_temp) 
-	t2=time.clock()
+	'''
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	#print "playerrank is : %s"%playerrank
 	#print "threat is : %s"%threat
@@ -50,12 +56,14 @@ def main():
 
 	decision4=makeDecisionRiverFinal(card,cardround,oppobehave,oppobehavenum,num_player,playermovement,playerrank)
 	t7=time.clock()
-	print "getRank runtime: ",t2-t1
-	print "getPlayerThreat runtime:	", t3-t2
+	#print "getRank runtime: ",t2-t1
+	print "getPlayerThreat runtime:	", t3-t1
 	print "makeDecisionBlind runtime: ",t4-t3
 	print "makeDecisionFlop runtime: ", t5-t4
 	print "makeDecisionTurn runtime: ",t6-t5
 	print "makeDecisionRiver runtime: ", t7-t6
+	print "total runtime: ", t7-t1
+
 '''
 def getRank(num_player,card_player,board_player,t):
 	hand=[]*2
@@ -82,7 +90,7 @@ def getPlayerThreat(num_player,playermovement,playerrank):
 		print "a,b is : %s"% a,b,ave_move
 		ave_rank = float(a)/b
 		temp=float(ave_rank/ave_move)
-		if  temp<550:
+		if  temp<750:
 			threat[i]=1
 		elif temp >1850:
 			threat[i]=3
@@ -97,11 +105,15 @@ def getPlayerThreat(num_player,playermovement,playerrank):
 def makeDecisionBlindFinal(card,cardround,oppobehave,oppobehavenum,num_player,playermovement,card_player,playerrank):
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	if max(threat)==3:
-		cc.makeDecisionBlind(card,cardround,oppobehave,oppobehavenum,num_player)
+		b1=cc.makeDecisionBlind(card,cardround,oppobehave,oppobehavenum,num_player)
+		print "b1=%s"%b1
 	elif max(threat)==2:
-		cn.makeDecisionBlind(card,cardround,oppobehave,oppobehavenum,num_player)
+		b2=cn.makeDecisionBlind(card,cardround,oppobehave,oppobehavenum,num_player)
+		print "b2=%s"%b2
 	else:
 		cs.makeDecisionBlind(card,cardround,oppobehave,oppobehavenum,num_player)
+		print "b3=%s"%b3
+
 
 
 def makeDecisionFlopFinal(card,cardround,percentage,oppobehave,oppobehavenum,num_player,playermovement,playerrank):
@@ -110,11 +122,17 @@ def makeDecisionFlopFinal(card,cardround,percentage,oppobehave,oppobehavenum,num
 	rank2 = getRank2(card)
 
 	if max(threat)==3:
-		cc.makeDecisionFlop(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2)
+		f1=cc.makeDecisionFlop(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2)
+		print "f1=%s"%f1
+
 	elif max(threat)==2:
-		cn.makeDecisionFlop(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2)
+		f2=cn.makeDecisionFlop(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2)
+		print "f2=%s"%f2
+
 	else:
-		cs.makeDecisionFlop(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2)
+		f3=cs.makeDecisionFlop(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2)
+		print "f3=%s"%f3
+
 
 
 def makeDecisionTurnFinal(card,cardround,percentage,oppobehave,oppobehavenum,num_player,playermovement,playerrank):
@@ -122,23 +140,36 @@ def makeDecisionTurnFinal(card,cardround,percentage,oppobehave,oppobehavenum,num
 	global rank3 
 	rank3 = getRank3(card)
 	if max(threat)==3:
-		cc.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
+		t1 = cc.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
+		print "t1=%s"%t1
+
 	elif max(threat)==2:
-		cn.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
+		t2 = cn.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
+		print "t2=%s"%t2
+
 	else:
-		cs.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
+		t3 = cs.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
+		print "t3=%s"%t3
+
 
 def makeDecisionRiverFinal(card,cardround,oppobehave,oppobehavenum,num_player,playermovement,playerrank):
+	global rank4
 	rank4 = getRank4(card)
 	rankboard = getRankBoard(card)
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 
 	if max(threat)==3:
-		cc.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
+		r1 = cc.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
+		print "r1=%s"%r1
+
 	elif max(threat)==2:
-		cn.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
+		r2 = cn.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
+		print "r2=%s"%r2
+
 	else:
-		cs.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
+		r3 = cs.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
+		print "r3=%s"%r3
+
 
 def getRank2(card):
 	hand=[Card.new(card[0]),Card.new(card[1])]
