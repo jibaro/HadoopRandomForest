@@ -17,7 +17,6 @@ rank2 = None
 rank3 = None
 rank4 = None 
 def main():
-	t1=time.clock()
 
 	num_player=3
 	card=['Ks','Qd','Jh','Ts','9d','7s','2d']
@@ -30,16 +29,21 @@ def main():
 	oppobehave=[['call','check','call','call','raise','call'],['call','check','call','call','raise','call'],['call','check','call','call','raise','call']]
 	oppobehavenum=[[100,0,200,200,300,300],[100,0,200,200,300,300],[100,0,200,200,300,300]]
 	playerrank=[[3325 for i in range(50)],[4700 for i in range(50)],[2467 for i in range(50)]]
+	t1=time.clock()
+
+	rank_temp=cn.getRank4(card)
+	t2=time.clock()
 	'''
 	for i in range(num_player):
 		for x in range(len(board_player)):
 			cardx=[card_player[i][x][0],card_player[i][x][1],board_player[x][0],board_player[x][1],board_player[x][2],board_player[x][3],board_player[x][4]]
+			t1=time.clock()
 
 			rank_temp=cn.getRank4(cardx)
 			t2=time.clock()
 
 			playerrank[i].append(rank_temp) 
-	'''
+	 '''
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	#print "playerrank is : %s"%playerrank
 	#print "threat is : %s"%threat
@@ -56,8 +60,8 @@ def main():
 
 	decision4=makeDecisionRiverFinal(card,cardround,oppobehave,oppobehavenum,num_player,playermovement,playerrank)
 	t7=time.clock()
-	#print "getRank runtime: ",t2-t1
-	print "getPlayerThreat runtime:	", t3-t1
+	print "getRank runtime: ",t2-t1
+	print "getPlayerThreat runtime:	", t3-t2
 	print "makeDecisionBlind runtime: ",t4-t3
 	print "makeDecisionFlop runtime: ", t5-t4
 	print "makeDecisionTurn runtime: ",t6-t5
@@ -80,29 +84,34 @@ def getRank(num_player,card_player,board_player,t):
 	#print playerrank
 	return rank
 '''
+#根据对手历史各轮的下注风格，推算对手的牌风，即下注威胁值
 def getPlayerThreat(num_player,playermovement,playerrank):
 	threat=[None]*num_player
 	for i in range(num_player):
-		ave_move = float(playermovement[i][0]+2*playermovement[i][1]+3*playermovement[i][2]+4*playermovement[i][3]+5*playermovement[i][4])\
-			/(playermovement[i][0]+playermovement[i][1]+playermovement[i][2]+playermovement[i][3]+playermovement[i][4])
-		a=7461*len(playerrank[i])-sum(playerrank[i])
-		b=len(playerrank[i])
-		print "a,b is : %s"% a,b,ave_move
-		ave_rank = float(a)/b
-		temp=float(ave_rank/ave_move)
-		if  temp<750:
+		if sum(playermovement[i])==0:
 			threat[i]=1
-		elif temp >1850:
-			threat[i]=3
-		else :
-			threat[i]=2
+		else:
+			ave_move = float(playermovement[i][0]+2*playermovement[i][1]+3*playermovement[i][2]+4*playermovement[i][3]+5*playermovement[i][4])\
+				/(playermovement[i][0]+playermovement[i][1]+playermovement[i][2]+playermovement[i][3]+playermovement[i][4])
+			a=7461*len(playerrank[i])-sum(playerrank[i])
+			b=len(playerrank[i])
+			print "a,b is : %s"% a,b,ave_move
+			ave_rank = float(a)/b
+			temp=float(ave_rank/ave_move)
+			if  temp<750:
+				threat[i]=1
+			elif temp >1850:
+				threat[i]=3
+			else :
+				threat[i]=2
 		#print "ave_rank/ sum_move is :%s"%temp
 	print "threat is %s"%threat
 
 	return threat
 
-
+#盲注阶段最终决策函数
 def makeDecisionBlindFinal(card,cardround,oppobehave,oppobehavenum,num_player,playermovement,card_player,playerrank):
+
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	if max(threat)==3:
 		b1=cc.makeDecisionBlind(card,cardround,oppobehave,oppobehavenum,num_player)
@@ -115,7 +124,7 @@ def makeDecisionBlindFinal(card,cardround,oppobehave,oppobehavenum,num_player,pl
 		print "b3=%s"%b3
 
 
-
+#公共牌阶段最终决策函数
 def makeDecisionFlopFinal(card,cardround,percentage,oppobehave,oppobehavenum,num_player,playermovement,playerrank):
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	global rank2 
@@ -134,7 +143,7 @@ def makeDecisionFlopFinal(card,cardround,percentage,oppobehave,oppobehavenum,num
 		print "f3=%s"%f3
 
 
-
+#转牌阶段最终决策函数
 def makeDecisionTurnFinal(card,cardround,percentage,oppobehave,oppobehavenum,num_player,playermovement,playerrank):
 	threat=getPlayerThreat(num_player,playermovement,playerrank)
 	global rank3 
@@ -151,7 +160,7 @@ def makeDecisionTurnFinal(card,cardround,percentage,oppobehave,oppobehavenum,num
 		t3 = cs.makeDecisionTurn(card,cardround,percentage,oppobehave,oppobehavenum,num_player,rank2,rank3)
 		print "t3=%s"%t3
 
-
+#河牌阶段最终决策函数
 def makeDecisionRiverFinal(card,cardround,oppobehave,oppobehavenum,num_player,playermovement,playerrank):
 	global rank4
 	rank4 = getRank4(card)
@@ -170,28 +179,28 @@ def makeDecisionRiverFinal(card,cardround,oppobehave,oppobehavenum,num_player,pl
 		r3 = cs.makeDecisionRiver(card,cardround,oppobehave,oppobehavenum,num_player,rank3,rank4,rankboard)
 		print "r3=%s"%r3
 
-
+#计算公共牌阶段牌力
 def getRank2(card):
 	hand=[Card.new(card[0]),Card.new(card[1])]
 	evaluator=Evaluator()
 	board=[Card.new(card[2]),Card.new(card[3]),Card.new(card[4])]
 	rank2=evaluator.evaluate(board,hand)
 	return rank2
-
+#计算转牌阶段牌力
 def getRank3(card):
 	hand=[Card.new(card[0]),Card.new(card[1])]
 	evaluator=Evaluator()
 	board=[Card.new(card[2]),Card.new(card[3]),Card.new(card[4]),Card.new(card[5])]
 	rank3=evaluator.evaluate(board,hand)
 	return rank3
-
+#计算河牌阶段牌力
 def getRank4(card):
 	hand=[Card.new(card[0]),Card.new(card[1])]
 	evaluator=Evaluator()
 	board=[Card.new(card[2]),Card.new(card[3]),Card.new(card[4]),Card.new(card[5]),Card.new(card[6])]
 	rank4=evaluator.evaluate(board,hand)
 	return rank4
-
+#计算桌面上所有五张明牌的牌力
 def getRankBoard(card):
 	board1=[Card.new(card[2]),Card.new(card[3])]
 	evaluator=Evaluator()
