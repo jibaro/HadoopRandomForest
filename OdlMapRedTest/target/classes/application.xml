@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+    <bean id="placeholderclass" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>file:/wls/applications/loki-app/config/spark_stream.properties</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="dataSource_allspark" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${partition.status.conn.driver}" />
+    <property name="url" value="${partition.status.conn.uri}" />
+    <property name="username" value="${partition.status.conn.user.name}" />
+    <property name="password" value="${partition.status.conn.passwd}" />
+    <property name="initialSize" value="1" />
+    <property name="maxActive" value="20" />
+    <property name="maxWait" value="18000" />
+    <property name="maxIdle" value="2" />
+    <property name="minIdle" value="0" />
+    <property name="removeAbandoned" value="true" />
+    <property name="removeAbandonedTimeout" value="300" />
+    <property name="testOnBorrow" value="true"/>
+    <property name="testWhileIdle" value="true"/>
+    <property name="validationQuery" value="select 1"/>
+    <property name="logAbandoned" value="true" />
+    </bean>
+
+    <bean id="genUserLinkingAction" class="lufax.mis.cal.odlmr.action.GenUserLinkingAction">
+    <!--<property name="odlCalPath" value="${odl.cal.log.path}"></property>-->
+    <property name="configPath" value="${stream.config.path}"></property>
+    </bean>
+
+    <bean id="fillCalEventGuidAction" class="lufax.mis.cal.odlmr.action.FillCalEventGuidAction">
+    <!--<property name="odlCalPath" value="${odl.cal.log.path}"></property>-->
+    <property name="configPath" value="${stream.config.path}"></property>
+    </bean>
+
+    <bean id="fillCalEventuserIDAction" class="lufax.mis.cal.odlmr.action.FillCalEventUserIdAction">
+    <!--<property name="odlCalPath" value="${odl.cal.log.path}"></property>-->
+    <property name="configPath" value="${stream.config.path}"></property>
+    </bean>
+
+    <bean id="genCalEventSessionAction" class="lufax.mis.cal.odlmr.action.GenCalEventSessionAction">
+    <!--<property name="odlCalPath" value="${odl.cal.log.path}"></property>-->
+    <property name="configPath" value="${stream.config.path}"></property>
+    </bean>
+
+    <bean id="genCalEventAction" class="lufax.mis.cal.odlmr.action.GenCalEventAction">
+    <!--<property name="odlCalPath" value="${odl.cal.log.path}"></property>-->
+    <property name="configPath" value="${stream.config.path}"></property>
+    </bean>
+
+</beans>

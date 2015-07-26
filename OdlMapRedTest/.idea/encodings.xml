@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/common/MisCommon.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/common/MisProperties.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/common/field/MarketCookieField.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/common/record/CalEventRecord.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/common/record/TSessionRecord.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/odlmr/action/FillCalEventGuidAction.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/odlmr/action/GenCalEventLogTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/odlmr/action/GenUserLinkingAction.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/DateUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/HdfsUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/JsonUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/LogUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/MD5Utils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/ProcessShell.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/TSessionUtils.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/lufax/mis/cal/utils/UrlUtils.java" charset="UTF-8" />
+  </component>
+</project>
